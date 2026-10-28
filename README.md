@@ -64,6 +64,8 @@ Photos can carry hidden details such as GPS location and phone model. Two guards
 
 ## Publishing
 
-`.github/workflows/deploy.yml` builds and publishes to GitHub Pages on every push to `main`. In the
-repository settings, set Pages → Source to "GitHub Actions". If the repository is not named
-`zlyxero.github.io`, set `base` in `astro.config.mjs` to `'/<repo-name>'`.
+The site is live at https://zlyxero.github.io/uncompiled-thoughts/.
+
+`.github/workflows/deploy.yml` builds and publishes it to GitHub Pages on every push to `main`.
+`base` in `astro.config.mjs` matches the repository name; for a custom domain, set `site` to the
+domain and `base` to `'/'`.
