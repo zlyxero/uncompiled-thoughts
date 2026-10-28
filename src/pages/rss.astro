@@ -1,0 +1,28 @@
+---
+import Base from '../layouts/Base.astro';
+import { url } from '../lib/site';
+
+const feedUrl = new URL(url('/feed.xml'), Astro.site).href;
+---
+
+<Base title="RSS" active="rss" crumb={[{ label: 'rss' }]}>
+  <article>
+    <p>
+      Want new posts without checking back here? Copy this link into a feed reader app like
+      NetNewsWire, Feedly or Reeder:
+    </p>
+    <p>
+      <a class="feed" href={feedUrl}>
+        {feedUrl}
+      </a>
+    </p>
+    <p>The app will show each new post as soon as it's out.</p>
+  </article>
+</Base>
+
+<style>
+  /* The link is the thing to copy, so it may wrap anywhere on a narrow screen */
+  .feed {
+    overflow-wrap: anywhere;
+  }
+</style>

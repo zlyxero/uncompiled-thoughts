@@ -11,7 +11,7 @@ export const pages: { id: PageId; label: string; path: string; file: string }[] 
   { id: 'projects', label: 'Projects', path: '/projects/', file: 'projects/' },
   { id: 'about', label: 'About', path: '/about/', file: 'about.md' },
   { id: 'resume', label: 'Resume', path: '/resume/', file: 'resume.pdf' },
-  { id: 'rss', label: 'RSS', path: '/feed.xml', file: 'feed.xml' },
+  { id: 'rss', label: 'RSS', path: '/rss/', file: 'feed.xml' },
 ];
 
 export const author = {
