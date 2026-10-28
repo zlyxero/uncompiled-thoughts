@@ -1,0 +1,157 @@
+---
+import { pages, url, author, type PageId } from '../lib/site';
+
+interface Props {
+  active?: PageId;
+}
+
+const { active } = Astro.props;
+---
+
+<header class="label" id="label">
+  <div class="inner">
+    <div class="field">
+      <span class="key">NAME</span>
+      <span class="value hand">{author.name}</span>
+    </div>
+    <div class="field subject">
+      <span class="key">SUBJECT</span>
+      <span class="value hand">{author.subject}</span>
+    </div>
+    <nav class="links" aria-label="Pages">
+      {pages.map((page, i) => (
+        <>
+          {i > 0 && <span aria-hidden="true">·</span>}
+          <a href={url(page.path)} aria-current={page.id === active ? 'page' : undefined}>
+            {page.label}
+          </a>
+        </>
+      ))}
+    </nav>
+    <button type="button" class="egg" id="egg" title="psst" aria-label="open terminal" hidden>
+      &gt;_
+    </button>
+  </div>
+</header>
+
+<style>
+  .label {
+    background: var(--paper);
+    border-radius: 10px;
+    padding: 5px;
+    margin: 0 0 1.6rem;
+    box-shadow: 0 1px 3px var(--shadow-label);
+  }
+
+  .inner {
+    position: relative;
+    border: 2px solid var(--ink);
+    border-radius: 7px;
+    padding: 0.45rem 1.2rem 0.35rem;
+  }
+
+  .field {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 0.7rem;
+    max-width: 22rem;
+    margin: 0 auto;
+  }
+
+  .key {
+    width: 5.2rem;
+    text-align: right;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--paper-ink);
+  }
+
+  .value {
+    flex: 1;
+    text-align: center;
+    border-bottom: 1.5px dotted var(--paper-muted);
+    font-size: 1.45rem;
+    line-height: 1.5;
+  }
+
+  .subject {
+    margin-top: 0.1rem;
+  }
+
+  .subject .value {
+    font-size: 1.15rem;
+  }
+
+  .links {
+    text-align: center;
+    font-size: 0.85rem;
+    margin-top: 0.35rem;
+  }
+
+  .links a {
+    color: var(--paper-muted);
+  }
+
+  .links a[aria-current='page'] {
+    color: var(--paper-amber);
+    font-weight: 700;
+  }
+
+  .links span {
+    margin: 0 0.6rem;
+    color: var(--paper-faint);
+  }
+
+  .egg {
+    position: absolute;
+    right: 0.6rem;
+    top: 0.45rem;
+    background: none;
+    border: 0;
+    padding: 0 0.2rem;
+    font: 700 0.8rem/1 var(--font-type);
+    color: var(--paper-faint);
+    cursor: pointer;
+  }
+
+  .egg:hover {
+    color: var(--ink);
+  }
+
+  /* Phones: a smaller label; the page links move to the tabs on the paper */
+  @media (max-width: 40rem) {
+    .label {
+      margin-bottom: 1.4rem;
+    }
+
+    .inner {
+      padding: 0.5rem 0.8rem 0.45rem;
+    }
+
+    .field {
+      gap: 0.55rem;
+    }
+
+    .key {
+      width: 4.4rem;
+      text-align: left;
+      font-size: 0.68rem;
+    }
+
+    .value {
+      font-size: 1.4rem;
+      text-align: left;
+      padding-left: 0.4rem;
+    }
+
+    .subject .value {
+      font-size: 1.05rem;
+    }
+
+    .links {
+      display: none;
+    }
+  }
+</style>

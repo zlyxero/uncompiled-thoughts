@@ -1,0 +1,69 @@
+/*
+ * Design tokens: the whole look, defined once.
+ * Components read these variables and never hard-code a color or font.
+ */
+:root {
+  /* Fonts */
+  --font-type: 'Courier Prime', 'Courier New', ui-monospace, monospace;
+  --font-hand: 'Gloria Hallelujah', 'Comic Sans MS', cursive;
+
+  /* Ruled-line rhythm: every size on the paper is a multiple of this */
+  --line: 28px;
+
+  /* Page */
+  --page-width: 52rem;
+  --page-gutter: 1.25rem;
+
+  /* Paper: where the red margin line sits, and the text size written on it */
+  --margin-x: 3.8rem;
+  --paper-pad-left: 5rem;
+  --paper-pad-right: 2rem;
+  --paper-text: 1rem;
+
+  /* Night desk (around the paper) */
+  --bg: #14161c;
+  --fg: #c8ccd8;
+  --muted: #6b7385;
+  --border: #2a2f3d;
+  --bar-bg: #1a1e2a;
+  --term-bg: #0d0f14;
+  --bright: #fff;
+  --link: #8fb6ff;
+  --amber: #e0af68;
+  --green: #9ece6a;
+  --error: #f7768e;
+
+  /* Paper */
+  --paper: #fbfaf6;
+  --paper-ink: #1f2430;
+  --paper-muted: #7a7f8c;
+  --paper-faint: #c3c7cf;
+  --paper-amber: #a8641a;
+  --paper-green: #3c8a5a;
+  --rule: #a6c6ee;
+  --margin-line: #e06666;
+
+  /* Pens */
+  --ink: #2a5caa;
+  --red: #c0392b;
+  --red-dark: #a3271b;
+
+  /* Photo and label */
+  --photo-frame: #fff;
+  --tape: rgba(236, 224, 170, 0.72);
+  --shadow: rgba(0, 0, 0, 0.18);
+  --shadow-soft: rgba(0, 0, 0, 0.08);
+  --shadow-edge: rgba(0, 0, 0, 0.25);
+  --shadow-label: rgba(0, 0, 0, 0.3);
+}
+
+/* Phones (the site's one breakpoint, 40rem): edge-to-edge paper, wider writing column */
+@media (max-width: 40rem) {
+  :root {
+    --page-gutter: 0.75rem;
+    --margin-x: 2.3rem;
+    --paper-pad-left: 3.1rem;
+    --paper-pad-right: 1rem;
+    --paper-text: 15px;
+  }
+}

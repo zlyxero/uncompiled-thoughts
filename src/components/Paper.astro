@@ -1,0 +1,209 @@
+---
+import { url } from '../lib/site';
+
+interface Crumb {
+  label: string;
+  href?: string;
+}
+
+interface Props {
+  /** Path shown after `~` in the breadcrumb, e.g. [{ label: 'about' }]. */
+  crumb: Crumb[];
+}
+
+const { crumb } = Astro.props;
+---
+
+<section class="sheet">
+  <nav class="crumb" aria-label="Breadcrumb">
+    <a href={url('/')} title="home">
+      ~
+    </a>
+    {crumb.map((part, i) => (
+      <>
+        <span class="slash">/</span>
+        {part.href ? (
+          <a href={part.href}>{part.label}</a>
+        ) : (
+          <span aria-current={i === crumb.length - 1 ? 'page' : undefined}>{part.label}</span>
+        )}
+      </>
+    ))}
+  </nav>
+  <div class="paper">
+    <slot />
+  </div>
+</section>
+
+<style>
+  .sheet {
+    position: relative;
+    margin-bottom: 1.8rem;
+  }
+
+  /* The dark tab cut into the paper's top-left corner */
+  .crumb {
+    position: absolute;
+    top: -0.87em;
+    left: 0;
+    z-index: 1;
+    background: var(--bg);
+    padding: 0 0.5rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: var(--amber);
+  }
+
+  .crumb a {
+    color: var(--amber);
+  }
+
+  .slash {
+    color: var(--muted);
+    margin: 0 0.15ch;
+  }
+
+  /* Ruled paper: blue rules every --line, red margin line on the left */
+  .paper {
+    background-color: var(--paper);
+    background-image:
+      linear-gradient(
+        to right,
+        transparent var(--margin-x),
+        var(--margin-line) var(--margin-x),
+        var(--margin-line) calc(var(--margin-x) + 1px),
+        transparent calc(var(--margin-x) + 1px)
+      ),
+      repeating-linear-gradient(
+        to bottom,
+        transparent 0,
+        transparent calc(var(--line) - 1px),
+        var(--rule) calc(var(--line) - 1px),
+        var(--rule) var(--line)
+      );
+    color: var(--paper-ink);
+    padding: calc(var(--line) * 2) var(--paper-pad-right) var(--line) var(--paper-pad-left);
+    font-size: var(--paper-text);
+    line-height: var(--line);
+  }
+
+  /*
+   * Phones: the sheet fills the rest of the screen and runs under the post bar.
+   * The page tabs sit above it, so the path moves onto the paper's first line.
+   */
+  @media (max-width: 40rem) {
+    .sheet {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      margin-bottom: 0;
+    }
+
+    .paper {
+      flex: 1;
+      padding-bottom: calc(var(--line) * 3);
+    }
+
+    .crumb {
+      top: 0;
+      left: var(--paper-pad-left);
+      background: none;
+      padding: 0;
+      font-weight: 400;
+      line-height: var(--line);
+      color: var(--paper-muted);
+    }
+
+    .crumb a,
+    .slash {
+      color: var(--paper-muted);
+      margin: 0;
+    }
+  }
+</style>
+
+<!--
+  Text styles for anything written on the paper. `:where()` keeps them weak,
+  so a component on the paper can override them with a single class.
+-->
+<style is:global>
+  /* Everything written on the paper sits on the rules */
+  .paper :where(*) {
+    line-height: var(--line);
+  }
+
+  .paper :where(h1) {
+    font-size: 1.25rem;
+    margin: 0;
+  }
+
+  @media (max-width: 40rem) {
+    .paper :where(h1) {
+      font-size: 1.15rem;
+    }
+  }
+
+  .paper :where(h2) {
+    font-size: 1rem;
+    color: var(--paper-amber);
+    margin: var(--line) 0 0;
+  }
+
+  .paper :where(h2)::before {
+    content: '── ';
+  }
+
+  .paper :where(h2)::after {
+    content: ' ──';
+  }
+
+  .paper :where(p) {
+    margin: 0 0 var(--line);
+  }
+
+  .paper :where(a) {
+    color: var(--ink);
+  }
+
+  .paper :where(ul) {
+    list-style: none;
+    margin: 0 0 var(--line);
+    padding: 0;
+  }
+
+  .paper :where(li) {
+    position: relative;
+    padding-left: 2ch;
+  }
+
+  .paper :where(li)::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--paper-amber);
+  }
+
+  .paper :where(pre) {
+    margin: 0 0 var(--line);
+    padding: 0 1ch;
+    overflow-x: auto;
+  }
+
+  .paper :where(.meta) {
+    font-size: 0.85rem;
+    color: var(--paper-muted);
+    margin: 0 0 var(--line);
+  }
+
+  .paper :where(.tag) {
+    color: var(--paper-green);
+    white-space: nowrap;
+  }
+
+  .paper :where(article)::after {
+    content: '';
+    display: block;
+    clear: both;
+  }
+</style>

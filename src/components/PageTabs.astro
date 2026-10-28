@@ -1,0 +1,57 @@
+---
+import { pages, url, type PageId } from '../lib/site';
+
+interface Props {
+  active?: PageId;
+}
+
+const { active } = Astro.props;
+---
+
+<!-- On phones the page links become divider tabs on top of the paper -->
+<nav class="tabs" aria-label="Pages">
+  {pages.map((page) => (
+    <a href={url(page.path)} aria-current={page.id === active ? 'page' : undefined}>
+      {page.id}
+    </a>
+  ))}
+</nav>
+
+<style>
+  .tabs {
+    display: none;
+  }
+
+  @media (max-width: 40rem) {
+    .tabs {
+      display: flex;
+      gap: 3px;
+      padding: 0 0.5rem;
+      font-size: 0.78rem;
+    }
+  }
+
+  a {
+    flex: 1;
+    padding: 0.35rem 0 0.25rem;
+    text-align: center;
+    color: var(--muted);
+    background: var(--bar-bg);
+    border: 1px solid var(--border);
+    border-bottom: 0;
+    border-radius: 7px 7px 0 0;
+  }
+
+  a:hover {
+    text-decoration: none;
+    color: var(--amber);
+  }
+
+  /* The open tab is cut from the same paper as the page below it */
+  a[aria-current='page'] {
+    color: var(--paper-amber);
+    background: var(--paper);
+    border-color: var(--paper);
+    font-weight: 700;
+  }
+</style>

@@ -1,0 +1,71 @@
+---
+import Base from '../layouts/Base.astro';
+import Polaroid from '../components/Polaroid.astro';
+import { elsewhere } from '../lib/site';
+import photo from '../assets/tj.jpg';
+---
+
+<Base title="About" active="about" crumb={[{ label: 'about' }]}>
+  <article>
+    <p>
+      Hey,{' '}
+      <a
+        class="jeff"
+        href="https://youtu.be/QVX3THmhSsw?t=90"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        my name is Jeff
+      </a>{' '}
+      :)
+    </p>
+    <p>
+      I'm a software engineer. Lately most of my time goes into AI, mostly poking at local models to
+      see when they're the right tool for the job. I build my own harnesses to test them and try new
+      ways of putting them to work. I think a lot of software is going to be rebuilt around AI over
+      the next few years, and I want to help with that. And there's always a fun side project or two
+      going :)
+    </p>
+    <Polaroid
+      src={photo}
+      alt="Jeff sitting on an orange couch on a rooftop at night, city lights behind him"
+      note="oh hey, that's me btw"
+    />
+    <p>
+      This blog is where I think out loud. I wanted somewhere to show how I think, and somewhere I
+      can come back to in a few years to see how that thinking changed.
+    </p>
+    <p>
+      The look comes from the exercise books we took notes in back in school, and from Diary of a
+      Wimpy Kid, which was my favourite book back then lol.
+    </p>
+    <h2>elsewhere</h2>
+    <p>
+      {elsewhere.map((link, i) => (
+        <>
+          {i > 0 && ' · '}
+          <a href={link.href}>{link.label}</a>
+        </>
+      ))}
+    </p>
+    <p class="meta updated">last updated 2026-10-26</p>
+  </article>
+</Base>
+
+<style>
+  /* "my name is Jeff" reads as plain text with a dotted underline */
+  .jeff {
+    color: inherit;
+    border-bottom: 1.5px dotted var(--ink);
+  }
+
+  .jeff:hover {
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .updated {
+    margin: 0;
+    font-size: 0.8rem;
+  }
+</style>

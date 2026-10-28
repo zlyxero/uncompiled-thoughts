@@ -1,0 +1,26 @@
+---
+const parts = [
+  ['user', 'jeff@notes'],
+  ['dim', ':'],
+  ['path', '~'],
+  ['dim', '$'],
+];
+---
+
+{parts.map(([kind, text]) => (
+  <span class={kind}>{text}</span>
+))}
+
+<style>
+  .user {
+    color: var(--green);
+  }
+
+  .path {
+    color: var(--link);
+  }
+
+  .dim {
+    color: var(--muted);
+  }
+</style>

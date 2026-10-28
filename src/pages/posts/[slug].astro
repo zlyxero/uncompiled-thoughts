@@ -1,0 +1,43 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getPosts, formatDate, type Post } from '../../lib/posts';
+import { url } from '../../lib/site';
+import { render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+}
+
+interface Props {
+  post: Post;
+}
+
+const { post } = Astro.props;
+const { title, date, tags } = post.data;
+const { Content } = await render(post);
+---
+
+<Base
+  title={title}
+  active="posts"
+  post={post.id}
+  crumb={[{ label: 'posts', href: url('/') }, { label: post.id }]}
+>
+  <article>
+    <header>
+      <h1>{title}</h1>
+      <p class="meta">
+        <time datetime={date.toISOString()}>{formatDate(date)}</time>
+        {tags.length > 0 && ' ·'}
+        {tags.map((tag) => (
+          <>
+            {' '}
+            <span class="tag">#{tag}</span>
+          </>
+        ))}
+      </p>
+    </header>
+    <Content />
+  </article>
+</Base>

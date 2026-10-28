@@ -1,0 +1,160 @@
+---
+import { getPosts, postUrl, formatDate } from '../lib/posts';
+
+interface Props {
+  /** Id of the post being read, so the bar starts on it. */
+  current?: string;
+}
+
+const { current } = Astro.props;
+
+const posts = (await getPosts()).map((post) => ({
+  id: post.id,
+  title: post.data.title,
+  date: formatDate(post.data.date),
+  href: postUrl(post),
+}));
+const index = Math.max(
+  0,
+  posts.findIndex((post) => post.id === current),
+);
+const shown = posts[index];
+---
+
+<nav class="bar" aria-label="Browse posts" data-post-bar data-index={index}>
+  <span class="label">POSTS</span>
+  {shown ? (
+    <>
+      <button type="button" class="js-only" data-prev aria-label="Previous post">
+        ‹
+      </button>
+      <span class="current">
+        <a href={shown.href} data-title>
+          {shown.title}
+        </a>
+        <span class="date" data-date>
+          [{shown.date}]
+        </span>
+      </span>
+      <button type="button" class="js-only" data-next aria-label="Next post">
+        ›
+      </button>
+      <span class="position js-only" data-position>
+        {index + 1}/{posts.length}
+      </span>
+      <span class="hint keys js-only">
+        <b>j k</b> or <b>← →</b> to browse
+      </span>
+      <span class="hint touch js-only">swipe to browse</span>
+      <script type="application/json" data-posts set:html={JSON.stringify(posts)} />
+    </>
+  ) : (
+    <span class="empty">nothing here yet</span>
+  )}
+</nav>
+
+<script>
+  import '../scripts/post-bar';
+</script>
+
+<style>
+  .bar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.4rem max(1rem, calc((100vw - var(--page-width)) / 2 + var(--page-gutter)));
+    background: var(--bar-bg);
+    border-top: 1px solid var(--border);
+    font-size: 0.88rem;
+    white-space: nowrap;
+  }
+
+  /* Browsing needs the script; without it the bar is just a link */
+  .bar:not([data-ready]) .js-only {
+    display: none;
+  }
+
+  .label {
+    color: var(--amber);
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    font-size: 0.78rem;
+  }
+
+  button {
+    background: none;
+    border: 0;
+    padding: 0 0.2rem;
+    color: var(--muted);
+    font: inherit;
+    font-size: 1.1rem;
+    cursor: pointer;
+  }
+
+  button:hover {
+    color: var(--amber);
+  }
+
+  .current {
+    flex: 0 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .current a {
+    color: var(--bright);
+  }
+
+  .date {
+    margin-left: 0.6rem;
+    font-size: 0.82rem;
+    color: var(--muted);
+  }
+
+  .position {
+    margin-left: auto;
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+
+  .empty,
+  .hint {
+    color: var(--muted);
+  }
+
+  .hint {
+    font-size: 0.8rem;
+  }
+
+  .hint b {
+    color: var(--green);
+    font-weight: 400;
+  }
+
+  .touch {
+    display: none;
+  }
+
+  @media (hover: none) {
+    .keys {
+      display: none;
+    }
+
+    .touch {
+      display: inline;
+    }
+  }
+
+  @media (max-width: 40rem) {
+    .bar .hint,
+    .label {
+      display: none;
+    }
+  }
+</style>

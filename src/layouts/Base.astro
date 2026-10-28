@@ -1,0 +1,54 @@
+---
+import '@fontsource/courier-prime/400.css';
+import '@fontsource/courier-prime/400-italic.css';
+import '@fontsource/courier-prime/700.css';
+import '@fontsource/gloria-hallelujah/400.css';
+import '../styles/tokens.css';
+import '../styles/global.css';
+
+import LabelHeader from '../components/LabelHeader.astro';
+import Terminal from '../components/Terminal.astro';
+import PageTabs from '../components/PageTabs.astro';
+import Paper from '../components/Paper.astro';
+import PostBar from '../components/PostBar.astro';
+import type { ComponentProps } from 'astro/types';
+import { author, url, type PageId } from '../lib/site';
+
+interface Props {
+  title: string;
+  crumb: ComponentProps<typeof Paper>['crumb'];
+  active?: PageId;
+  /** Id of the post on this page, if any. */
+  post?: string;
+}
+
+const { title, crumb, active, post } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{author.name} · {title}</title>
+    <meta name="description" content={author.description} />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title={author.subject}
+      href={url('/feed.xml')}
+    />
+  </head>
+  <body>
+    <LabelHeader active={active} />
+    <!-- On a post, `cat posts` should still go back to the list -->
+    <Terminal active={post ? undefined : active} />
+    <main>
+      <PageTabs active={active} />
+      <Paper crumb={crumb}>
+        <slot />
+      </Paper>
+    </main>
+    <PostBar current={post} />
+  </body>
+</html>

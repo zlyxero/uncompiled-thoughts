@@ -1,0 +1,116 @@
+---
+import Prompt from './Prompt.astro';
+import { pages, url, type PageId } from '../lib/site';
+
+interface Props {
+  active?: PageId;
+}
+
+const { active } = Astro.props;
+---
+
+<section class="term" id="terminal" aria-label="Terminal" hidden>
+  <div>
+    <Prompt /> ls
+  </div>
+  <div class="files">
+    {pages.map((page) => (
+      <button
+        type="button"
+        data-file={page.file}
+        data-href={url(page.path)}
+        aria-current={page.id === active ? 'page' : undefined}
+      >
+        {page.file}
+      </button>
+    ))}
+  </div>
+  <div class="output" aria-live="polite"></div>
+  <div class="line">
+    <Prompt />
+    <input aria-label="terminal" autocomplete="off" autocapitalize="off" spellcheck="false" />
+  </div>
+  <div class="hint">
+    try <b>cat about.md</b>, or <b>exit</b> to go back
+  </div>
+</section>
+
+<script>
+  import '../scripts/terminal';
+</script>
+
+<style>
+  .term {
+    background: var(--term-bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.6rem 1rem 0.5rem;
+    margin: 0 0 1.6rem;
+    font-size: 0.92rem;
+    line-height: 1.7;
+  }
+
+  .files {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 2.2ch;
+  }
+
+  .files button {
+    background: none;
+    border: 0;
+    padding: 0;
+    font: inherit;
+    color: var(--fg);
+    cursor: pointer;
+  }
+
+  .files button:hover {
+    color: var(--amber);
+  }
+
+  .files button[aria-current='page'] {
+    color: var(--bg);
+    background: var(--amber);
+    padding: 0 0.3ch;
+  }
+
+  .output :global(div) {
+    white-space: pre-wrap;
+  }
+
+  .output :global(.echo) {
+    color: var(--muted);
+  }
+
+  .output :global(.error) {
+    color: var(--error);
+  }
+
+  .line {
+    display: flex;
+    align-items: center;
+  }
+
+  .line input {
+    flex: 1;
+    min-width: 0;
+    margin-left: 1ch;
+    background: none;
+    border: 0;
+    outline: none;
+    color: var(--bright);
+    font: inherit;
+    caret-color: var(--amber);
+  }
+
+  .hint {
+    color: var(--muted);
+    font-size: 0.78rem;
+  }
+
+  .hint b {
+    color: var(--green);
+    font-weight: 400;
+  }
+</style>

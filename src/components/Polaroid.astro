@@ -1,0 +1,116 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  src: ImageMetadata;
+  alt: string;
+  /** Handwritten note under the photo. */
+  note: string;
+}
+
+const { src, alt, note } = Astro.props;
+---
+
+<figure class="snap">
+  <div class="photo">
+    <span class="tape"></span>
+    <Image src={src} alt={alt} width={460} />
+  </div>
+  <figcaption class="note">
+    <svg viewBox="0 0 78 76" aria-hidden="true">
+      <path d="M10 70 C 6 52, 14 34, 30 24 S 56 10, 66 6"></path>
+      <path d="M53 3 L67 5.5 L59 17"></path>
+    </svg>
+    <span class="hand">{note}</span>
+  </figcaption>
+</figure>
+
+<style>
+  .snap {
+    position: relative;
+    float: right;
+    width: 250px;
+    margin: 0 -0.5rem var(--line) 2rem;
+  }
+
+  .photo {
+    position: relative;
+    background: var(--photo-frame);
+    padding: 10px 10px 30px;
+    transform: rotate(3deg);
+    box-shadow:
+      0 2px 6px var(--shadow),
+      0 0 1px var(--shadow-edge);
+  }
+
+  .photo img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .tape {
+    position: absolute;
+    top: -14px;
+    left: 50%;
+    z-index: 2;
+    width: 96px;
+    height: 28px;
+    margin-left: -48px;
+    background: var(--tape);
+    transform: rotate(-5deg);
+    box-shadow: 0 1px 1px var(--shadow-soft);
+  }
+
+  /* Hand-drawn arrow pointing up at the photo */
+  .note {
+    position: relative;
+    height: calc(var(--line) * 3);
+  }
+
+  .note svg {
+    position: absolute;
+    left: -6px;
+    top: -34px;
+    width: 78px;
+    height: 76px;
+    overflow: visible;
+    fill: none;
+    stroke: var(--ink);
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .note span {
+    position: absolute;
+    left: 30px;
+    top: 30px;
+    font-size: 1.25rem;
+    line-height: 1.3;
+    white-space: nowrap;
+    transform: rotate(-4deg);
+  }
+
+  /*
+   * Phones: the photo sits in the text flow, so its height must be whole lines
+   * or every line after it drifts off the rules. 10 lines of photo + 3 of note.
+   */
+  @media (max-width: 40rem) {
+    .snap {
+      float: none;
+      width: 200px;
+      margin: var(--line) auto;
+    }
+
+    .photo {
+      height: calc(var(--line) * 10);
+    }
+
+    .photo img {
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+</style>

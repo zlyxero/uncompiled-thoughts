@@ -1,0 +1,3 @@
+#!/bin/sh
+# Strip personal metadata (EXIF, GPS, camera...) from images before they are committed.
+exec node scripts/images.mjs strip --staged

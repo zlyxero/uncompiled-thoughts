@@ -1,0 +1,54 @@
+---
+import { postUrl, formatDate, type Post } from '../lib/posts';
+
+interface Props {
+  /** Posts, newest first. */
+  posts: Post[];
+}
+
+const { posts } = Astro.props;
+
+const years = Map.groupBy(posts, (post) => post.data.date.getUTCFullYear());
+---
+
+<article>
+  {[...years].map(([year, postsInYear]) => (
+    <section>
+      <h2>{year}</h2>
+      <ul>
+        {postsInYear.map((post) => (
+          <li>
+            <a href={postUrl(post)}>{post.data.title}</a>
+            <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
+          </li>
+        ))}
+      </ul>
+    </section>
+  ))}
+</article>
+
+<style>
+  li {
+    display: flex;
+    justify-content: space-between;
+    gap: 2ch;
+  }
+
+  time {
+    font-size: 0.9rem;
+    color: var(--paper-muted);
+    white-space: nowrap;
+  }
+
+  /* Phones: the date drops under the title instead of squeezing it */
+  @media (max-width: 40rem) {
+    li {
+      flex-direction: column;
+      gap: 0;
+    }
+
+    time {
+      font-size: 0.8rem;
+    }
+  }
+</style>

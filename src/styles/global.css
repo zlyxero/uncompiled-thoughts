@@ -1,0 +1,58 @@
+/* Base styles shared by every page. Colors and fonts come from tokens.css. */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0 auto;
+  max-width: var(--page-width);
+  padding: 1.6rem var(--page-gutter) 4rem;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-type);
+  font-size: 1rem;
+  line-height: 1.65;
+}
+
+a {
+  color: var(--link);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Phones: the paper runs edge to edge, past the page gutter, and down to the screen's bottom */
+@media (max-width: 40rem) {
+  body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100dvh;
+    padding-top: 1rem;
+    padding-bottom: 0;
+  }
+
+  main {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    margin-inline: calc(-1 * var(--page-gutter));
+  }
+}
+
+[hidden] {
+  display: none !important;
+}
+
+/* Handwriting: only for things Jeff would write by hand */
+.hand {
+  font-family: var(--font-hand);
+  color: var(--ink);
+}

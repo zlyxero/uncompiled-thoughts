@@ -1,0 +1,31 @@
+{
+  "name": "uncompiled-thoughts",
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=22.23.4"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "npm run images:check && astro build",
+    "preview": "astro preview",
+    "check": "astro check && prettier --check .",
+    "format": "prettier --write .",
+    "images:check": "node scripts/images.mjs check",
+    "images:strip": "node scripts/images.mjs strip",
+    "prepare": "git config core.hooksPath .githooks"
+  },
+  "dependencies": {
+    "@astrojs/rss": "^4.0.19",
+    "@fontsource/courier-prime": "^5.3.0",
+    "@fontsource/gloria-hallelujah": "^5.3.0",
+    "astro": "^7.4.2"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.12",
+    "prettier": "^3.9.10",
+    "prettier-plugin-astro": "^1.1.2",
+    "sharp": "^0.35.5",
+    "typescript": "^6.0.3"
+  }
+}
